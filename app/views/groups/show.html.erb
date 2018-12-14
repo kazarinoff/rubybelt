@@ -1,0 +1,23 @@
+<h1><%= @group.name %></h1>
+<% if (@isamember) %>
+<form action='/members/destroy' method="post">
+<input type = 'hidden' name = "authenticity_token" value = "<%=form_authenticity_token%>">
+<input type='hidden' value='delete' name='_method'>
+<input type = 'hidden' name='member[user_id]' value='<%= @user.id %>'>
+<input type = 'hidden' name='member[group_id]' value='<%= @group.id %>'>
+<input type='submit' value= "Leave Group">
+</form>
+<% else %>
+<form action ='/members/create' method="post">
+<input type = 'hidden' name = "authenticity_token" value = "<%=form_authenticity_token%>">
+<input type = 'hidden' name='member[user_id]' value='<%= @user.id %>'>
+<input type = 'hidden' name='member[group_id]' value='<%= @group.id %>'>
+<input type='submit' value= "Join Group">
+</form>
+<% end %>
+<p><%= @group.description %></p>
+<h2>Created by: <%= @group.user.first_name %> <%= @group.user.last_name %></h2>
+<h2>Members:</h2>
+<% @members.each do |member| %>
+    <ul><%= member.user.first_name %> <%= member.user.last_name %>
+<% end %>

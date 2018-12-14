@@ -1,0 +1,64 @@
+<h1>Hi <%= @user.first_name %> <%= @user.last_name %>!</h1>
+<div style='text-align:justified;'>
+<div class='box' style='display:inline-block; width:600px;'>
+<h3>Here are the organizations you may join:</h3><br>
+<% @groups.each do |group| %>
+    <% if (group.user==@user) %>
+    <form action ='/groups/destroy' method="post">
+    <input type = 'hidden' name = "authenticity_token" value = "<%=form_authenticity_token%>">
+    <input type='hidden' value='delete' name='_method'>
+    <input type = 'hidden' name='group[id]' value='<%= group.id %>'>
+    <input type = 'hidden' name='group[user_id]' value='<%= @user.id %>'>
+    <input type='submit' value= "Disband Group">
+    </form>
+    <% end %>
+
+    <h2><a href='/groups/<%= group.id %>'><%= group.name %></a> 
+    <% if (@isamember[group.id]) %>
+    <form action='/members/destroy' method="post">
+    <input type = 'hidden' name = "authenticity_token" value = "<%=form_authenticity_token%>">
+    <input type='hidden' value='delete' name='_method'>
+    <input type = 'hidden' name='member[user_id]' value='<%= @user.id %>'>
+    <input type = 'hidden' name='member[group_id]' value='<%= group.id %>'>
+    <input type='submit' value= "Leave Group">
+    </form>
+    <% else %>
+    <form action ='/members/create' method="post">
+    <input type = 'hidden' name = "authenticity_token" value = "<%=form_authenticity_token%>">
+    <input type = 'hidden' name='member[user_id]' value='<%= @user.id %>'>
+    <input type = 'hidden' name='member[group_id]' value='<%= group.id %>'>
+    <input type='submit' value= "Join Group">
+    </form>
+    <% end %>
+        </h2>
+    <p>Members: 
+    <% if @membercount[group.id] %>
+    <%= @membercount[group.id] %>
+    <% else %>0
+    <% end %>
+    </p>
+    <p><%= group.description %></p>
+    <br>
+<% end %>
+</div>
+
+<div class='box' style='display:inline-block; width:400px; border: 2pt solid black; margin-left:600px; vertical-align:top;'>
+<h2>Create a new organization</h2>
+<% if flash[:notice] %>
+<% flash[:notice].each do |key,value| %>
+    <p id="notice"><%= key %> <%= value[0] %></p>  
+  <% end %>
+  <% end %>
+
+<form action = "" method = "post">
+  <input type = 'hidden' name = "authenticity_token" value = "<%=form_authenticity_token%>">
+  <input type = 'hidden' name='group[user_id]' value='<%=@user.id %>' id='group_user_id'>
+  <p>Organization Name</p>
+  <input type='text' name = "group[name]" id = "group_name">
+  <p>Description</p>
+  <textarea name = "group[description]" id = "group_description"></textarea>
+  <br>
+  <input type = "submit" value = "Create" id='addgroupbutton'>
+</form>
+</div>
+</div>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Groups of Amazingness</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <%= csrf_meta_tags %>
+  <style>
+  *{padding:0px;
+margin:5px;}
+  .box {color:black;
+  }
+  form {
+    display:inline;
+  }
+  </style>
+</head>
+<body>
+<div style='text-align:right;'>
+<% if session['user_id'] %>
+<a href='/groups/index'>Dashboard</a> | 
+<a href='/logout/'>Logout</a>
+<% end %>
+</div>
+<%= yield %>
+
+</body>
+</html>
